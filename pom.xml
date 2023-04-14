@@ -11,10 +11,10 @@
         <relativePath/>
     </parent>
     <groupId>com.falynsky</groupId>
-    <artifactId>smartmarkt</artifactId>
+    <artifactId>fundy</artifactId>
     <version>0.2.0</version>
-    <name>smartmarkt</name>
-    <description>Smartmarkt Server - E-Thesis project</description>
+    <name>fundy</name>
+    <description>Fundy Server - Masters-Thesis project</description>
 
     <properties>
         <java.version>8</java.version>
