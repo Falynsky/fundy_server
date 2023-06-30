@@ -1,26 +1,25 @@
 package com.falynsky.fundy.repositories;
 
-import com.falynsky.fundy.models.Account;
-import com.falynsky.fundy.models.DTO.UserDTO;
-import com.falynsky.fundy.models.User;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+import com.falynsky.fundy.models.User;
+import com.falynsky.fundy.models.DTO.UserDTO;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    User findByUsername(String username);
+
     User findFirstByOrderByIdDesc();
 
-    User findFirstByAccountId(Account account);
-
-    @Query("SELECT new com.falynsky.fundy.models.DTO.UserDTO(u.id, u.firstName, u.lastName, u.accountId.id) FROM User u")
+    @Query("SELECT new com.falynsky.fundy.models.DTO.UserDTO(a.id, a.username, a.password, a.mail, a.role) FROM User a")
     List<UserDTO> retrieveUserAsDTO();
 
-    @Query("SELECT new com.falynsky.fundy.models.DTO.UserDTO(u.id, u.firstName, u.lastName, u.accountId.id) FROM User u where u.id = :userId")
+    @Query("SELECT new com.falynsky.fundy.models.DTO.UserDTO(a.id, a.username, a.password, a.mail, a.role) FROM User a where a.id = :userId")
     UserDTO retrieveUserAsDTObyId(@Param("userId") Integer userId);
 }

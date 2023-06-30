@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="4" author="kfa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="dbo" tableName="transactions"/>
+            </not>
+        </preConditions>
+        <comment>Create transactions table</comment>
+        <createTable
+                schemaName="dbo"
+                tableName="transactions">
+            <column name="id" type="int"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="amount" type="double"/>
+            <column name="transaction_info" type="varchar(255)"/>
+            <column name="document_id" type="int"/>
+        </createTable>
+        <addNotNullConstraint tableName="transactions" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="transactions" columnName="name" columnDataType="varchar(255)"/>
+        <addNotNullConstraint tableName="transactions" columnName="amount" columnDataType="double"/>
+
+        <addPrimaryKey tableName="transactions" columnNames="id"/>
+
+        <addUniqueConstraint tableName="transactions" columnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="transactions" baseColumnNames="document_id"
+                                 constraintName="transactions_documents_FK"
+                                 referencedTableName="documents"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

@@ -10,5 +10,4 @@ public class FundyApplication {
         SpringApplication.run(FundyApplication.class, args);
     }
 
-
 }

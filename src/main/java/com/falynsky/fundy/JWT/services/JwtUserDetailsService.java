@@ -1,28 +1,28 @@
 package com.falynsky.fundy.JWT.services;
 
-import com.falynsky.fundy.models.Account;
-import com.falynsky.fundy.repositories.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.falynsky.fundy.models.User;
+import com.falynsky.fundy.repositories.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-    AccountRepository accountRepository;
+    UserRepository userRepository;
 
-    public JwtUserDetailsService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public JwtUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findByUsername(username);
-        if (account == null) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
             throw new UsernameNotFoundException("ACCOUNT NOT FOUND!");
         }
-        return account;
+        return user;
     }
 }

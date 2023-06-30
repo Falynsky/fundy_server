@@ -1,28 +1,28 @@
 package com.falynsky.fundy.controllers;
 
-import com.falynsky.fundy.models.Account;
-import com.falynsky.fundy.models.User;
-import com.falynsky.fundy.services.AccountService;
-import com.falynsky.fundy.services.UserService;
-import com.falynsky.fundy.utils.ResponseMapUtils;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.falynsky.fundy.models.User;
+import com.falynsky.fundy.services.UserService;
+import com.falynsky.fundy.utils.ResponseMapUtils;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private final AccountService accountService;
     private final UserService userService;
 
     public ProfileController(
-            AccountService accountService,
             UserService userService) {
-        this.accountService = accountService;
         this.userService = userService;
     }
 
@@ -33,8 +33,7 @@ public class ProfileController {
         Map<String, Object> data = new HashMap<>();
         try {
             User currentUser = getCurrentUser(userToken);
-            data.put("firstName", currentUser.getFirstName());
-            data.put("lastName", currentUser.getLastName());
+            data.put("username", currentUser.getUsername());
             data.put("userId", currentUser.getId());
         } catch (Exception ex) {
             return ResponseMapUtils.buildResponse(data, false);
@@ -43,8 +42,7 @@ public class ProfileController {
     }
 
     private User getCurrentUser(String userToken) throws Exception {
-        Account account = accountService.getCurrentAccount(userToken);
-        return userService.getCurrentUserByAccount(account);
+        return userService.getCurrentUser(userToken);
     }
 
 }

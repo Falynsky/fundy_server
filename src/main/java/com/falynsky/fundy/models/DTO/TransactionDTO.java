@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasketDTO {
+public class TransactionDTO {
 
     public int id;
     public String name;
-    public int userId;
-
+    public double amount;
+    public String transactionInfo;
+    public Integer documentId;
 }
 

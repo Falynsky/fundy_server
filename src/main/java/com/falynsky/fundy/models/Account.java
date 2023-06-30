@@ -1,65 +1,40 @@
 package com.falynsky.fundy.models;
 
-import lombok.AllArgsConstructor;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Collection;
-import java.util.Collections;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "accounts")
-public class Account implements UserDetails {
+public class Account {
+
+    public Account(int id, String name, User userId) {
+        this.id = id;
+        this.name = name;
+        this.userId = userId;
+    }
 
     @Id
-    private Integer id;
-    private String username;
-    private String password;
-    private String mail;
-    private String role;
+    @Column(name = "id")
+    public int id;
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    @Column(name = "name")
+    public String name;
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+    @Column(name = "account_balance")
+    public double accountBalance;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    public User userId;
 
 }

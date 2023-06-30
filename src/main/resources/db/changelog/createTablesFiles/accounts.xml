@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="2" author="kfa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="dbo" tableName="accounts"/>
+            </not>
+        </preConditions>
+        <comment>Create account table</comment>
+        <createTable schemaName="dbo" tableName="accounts">
+            <column name="id" type="int"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="account_balance" type="double"/>
+            <column name="user_id" type="int"/>
+        </createTable>
+
+        <addNotNullConstraint tableName="accounts" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="accounts" columnName="name" columnDataType="varchar(255)"/>
+        <addNotNullConstraint tableName="accounts" columnName="user_id" columnDataType="int"/>
+        <addNotNullConstraint tableName="accounts" columnName="account_balance" columnDataType="double"/>
+        
+        <addPrimaryKey tableName="accounts" columnNames="id"/>
+
+        <addUniqueConstraint tableName="accounts" columnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="accounts" baseColumnNames="user_id" constraintName="accounts_users_FK" referencedTableName="users" referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>

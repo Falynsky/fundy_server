@@ -1,46 +1,34 @@
 package com.falynsky.fundy.controllers;
 
-import com.falynsky.fundy.models.Account;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.falynsky.fundy.models.DTO.AccountDTO;
 import com.falynsky.fundy.repositories.AccountRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/accounts")
 public class AccountController {
 
-    AccountRepository usersRepository;
+    private final AccountRepository accountRepository;
 
-    public AccountController(AccountRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
+    @GetMapping("/{id}")
+    public AccountDTO getUserById(@PathVariable("id") Integer id) {
+        return accountRepository.retrieveAccountAsDTObyId(id);
     }
 
     @GetMapping("/all")
     public List<AccountDTO> getAllUsers() {
-        return usersRepository.retrieveAccountAsDTO();
+        return accountRepository.retrieveAccountAsDTO();
     }
-
-    @GetMapping("/{id}")
-    public AccountDTO getAllUsers(@PathVariable("id") Integer id) {
-        return usersRepository.retrieveAccountAsDTObyId(id);
-    }
-
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable Integer userId) {
-        Optional<Account> userToDelete = usersRepository.findById(userId);
-        if (userToDelete.isPresent()) {
-            usersRepository.delete(userToDelete.get());
-            return "User deleted with id = " + userId;
-        } else {
-            return String.valueOf(new IOException("User with id = " + userId + " do not exists!"));
-        }
-    }
-
 }

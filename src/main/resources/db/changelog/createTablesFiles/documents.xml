@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
 
-<changeSet id="5" author="kfa">
+<changeSet id="3" author="kfa">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists schemaName="dbo" tableName="documents"/>
@@ -25,7 +25,9 @@
         <addNotNullConstraint tableName="documents" columnName="doc_name" columnDataType="varchar(255)"/>
         <addNotNullConstraint tableName="documents" columnName="doc_type" columnDataType="varchar(255)"/>
         <addNotNullConstraint tableName="documents" columnName="file_bytes" columnDataType="varbinary(MAX)"/>
+
         <addPrimaryKey tableName="documents" columnNames="id"/>
+
         <addUniqueConstraint tableName="documents" columnNames="doc_name"/>
 
     </changeSet>
